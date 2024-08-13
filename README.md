@@ -1,9 +1,24 @@
-# Final Project Starter
+# SafeHaven: Resources at a SNAP of your finger
 
-This will be the starter code for your final project! But first, we're going to spend a day making improvements to it. We'll use pull requests to manage this, and for that you'll need to be on your own branch. You can work in pairs or on your own.
+SafeHaven is a new way to find support using Snapchat's map tab. This button will show the user a list of location resources near them, spotlights, and stories from snap stars and users all tailored around finding help to overcome housing insecurity. Non-profit organizations will also have a donate button on their location details to help encourage users to get involved in helping those in need. Are you ready to find your Haven?
 
-## Fork the Repository 
-Click on the Fork button: This is usually found in the top-right corner of the repository's page. This will create a copy of the repository under your own GitHub account.
+![Starter screen](assets/Starter%Screen.png)
+
+![Explore SafeHaven](assets/Explore%20SafeHaven.png)
+
+![Location Details](assets/Location%20Details.png)
+
+## How to see the feature on your phone
+
+1. Download Visual Studio Code onto your local machine.
+
+2. Clone the repository onto your local machine pressing the green code button. Use any method that works best for you. We used GitHub CLI by first running `brew install gh` in our terminal and then running the GitHub CLI provided in underneath the green code button. 
+
+3. Once cloned, run `cd housingSecurityTeam`, then open in visual studio code running `code .` in your terminal.
+
+4. Open the terminal inside your Visual Studio Code and run `yarn install`.
+
+5. 
 
 ## Clone the Forked Repository
 1. Go to your forked repository on GitHub.
