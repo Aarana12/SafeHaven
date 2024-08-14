@@ -115,7 +115,7 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
           >
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
-              size={24}
+              size={18}
               color={isFavorite ? "red" : "#000000"}
             />
           </TouchableOpacity>
@@ -125,8 +125,8 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
   };
 
   return (
-    <View style={styles.container}>
-      {/* Header Container */}
+    <>
+    <View style={styles.bigContainer}>
       <View style={styles.headerContainer}>
         <View style={styles.headerContent}>
           <Image 
@@ -184,6 +184,10 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
           </TouchableOpacity>
         </ScrollView>
       </View>
+    
+    <View style={styles.container}>
+      {/* Header Container */}
+
 
       {/* Title and Button Container */}
       <View style={styles.titleAndButtonContainer}>
@@ -216,8 +220,8 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
       <View style={styles.spotlightsContainer}>
         <View style={styles.spotlightsHeader}>
           <Text style={styles.spotlightsTitle}>Spotlights</Text>
-          <TouchableOpacity style={styles.allButton}>
-            <Text style={styles.allButtonText}>All</Text>
+          <TouchableOpacity style={styles.showAllButton}>
+            <Text style={styles.showAllButtonText}>All</Text>
           </TouchableOpacity>
         </View>
         <ScrollView
@@ -248,20 +252,26 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
         </ScrollView>
       </View>
     </View>
+    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  bigContainer: {
+    flex: 1,
+    // backgroundColor: "red",
+  },
   container: {
     flex: 1,
     backgroundColor: "#F0F0F0",
-    padding: 20,
+    paddingHorizontal: 20,
   },
   headerContainer: {
     backgroundColor: "#FFFFFF",
-    padding: 20,
-    borderRadius: 16,
-    marginBottom: 20,
+    paddingLeft: 20,
+    // borderRadius: 16,
+    marginBottom: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
@@ -272,8 +282,8 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 20,
-    right: 20,
+    top: 5,
+    right: 30,
     backgroundColor: '#D3D3D3',
     borderRadius: 20,
     height: 30,
@@ -299,20 +309,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "700",
     color: "#333",
-    marginBottom: 5,
+    marginBottom: 1,
     fontFamily: 'AvenirNext-Regular',
   },
   subTitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666',
     fontFamily: 'AvenirNext-Regular',
   },
   scrollContainer: {
     flexDirection: 'row',
-    marginTop: 10,
+    // marginTop: 10,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -346,28 +356,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "600",
     color: "#000",
-    marginBottom: 5,
+    marginBottom: 2,
     fontFamily: 'AvenirNext-Regular',
   },
   vicinity: {
-    fontSize: 14,
+    fontSize: 12,
     color: "#888",
     fontFamily: 'AvenirNext-Regular',
   },
   status: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "600",
     fontFamily: 'AvenirNext-Regular',
   },
   heartButton: {
     backgroundColor: '#D3D3D3',
     borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    height: 40,
+    height: 35,
+    width:35,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 2,
@@ -378,43 +387,42 @@ const styles = StyleSheet.create({
     borderColor: '#DDDDDD',
     borderWidth: 1,
     borderRadius: 20,
-    paddingVertical: 6,
     paddingHorizontal: 12,
-    marginHorizontal: 8,
+    marginRight: 8,
     marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
+    height: 28,
     elevation: 2,
     flexDirection: 'row',
   },
   icon: {
-    marginRight: 8,
+    marginRight: 6,
   },
   buttonText: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: "500",
     fontFamily: 'AvenirNext-Regular',
   },
   listContainer: {
     flex: 1,
   },
   list: {
-    marginTop: 20,
+    marginTop: 10,
   },
   showAllButton: {
     backgroundColor: '#D3D3D3',
     borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    height: 40,
+    marginRight: 10,
+    height: 30,
+    width: 60,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 2,
   },
   showAllButtonText: {
     color: '#000000',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     fontFamily: 'AvenirNext-Regular',
   },
@@ -422,7 +430,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
   },
   resourcesTitle: {
     fontSize: 20,
@@ -443,22 +450,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     color: '#333',
-    fontFamily: 'AvenirNext-Regular',
-  },
-  allButton: {
-    backgroundColor: '#D3D3D3',
-    borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 2,
-  },
-  allButtonText: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: '600',
     fontFamily: 'AvenirNext-Regular',
   },
   spotlightsScrollContainer: {

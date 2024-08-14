@@ -132,7 +132,7 @@ export default function MapScreen({ navigation }) {
   };
   
   const fetchNearbyPlaces = async (keyword) => {
-    const radius = 2 * 1609.34; // 2 miles in meters
+    const radius = 2 * 1609.34;
     const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&radius=${radius}&keyword=${keyword}&key=${apiKey}`;
   
     const mapIconImage = getMapIconImage(keyword);
@@ -141,9 +141,12 @@ export default function MapScreen({ navigation }) {
       const response = await axios.get(url);
       const places = response.data.results;
   
-      const placesWithMapIconImages = places.map(place => ({
+      const luckyPlacesIndexes = getRandomIndexes(places.length, 6);
+  
+      const placesWithMapIconImages = places.map((place, index) => ({
         ...place,
-        mapIconImage
+        mapIconImage,
+        isLucky: luckyPlacesIndexes.includes(index)
       }));
   
       return placesWithMapIconImages;
@@ -152,7 +155,6 @@ export default function MapScreen({ navigation }) {
       return [];
     }
   };
-  
   
   const handleShowPlaces = async (keyword) => {
     if (!location) {
@@ -166,6 +168,17 @@ export default function MapScreen({ navigation }) {
     locationListModalRef.current.present();
   };
   
+  const getRandomIndexes = (max, count) => {
+    const indexes = new Set();
+    while (indexes.size < count) {
+      const randomIndex = Math.floor(Math.random() * max);
+      indexes.add(randomIndex);
+    }
+    console.log('LUCKY: ', indexes)
+    return Array.from(indexes);
+  };
+  
+  
   
   const handleShowSafeHaven = async () => {
     if (!location) {
@@ -175,17 +188,21 @@ export default function MapScreen({ navigation }) {
   
     const categories = [
       "nonprofit organization",
+      "police hospital emergency",
       "free wifi place"
     ];
   
     try {
-      const allPlaces = [];
-      for (const category of categories) {
-        const result = await fetchNearbyPlaces(category);
-        allPlaces.push(...result.slice(0, 4));
-      }
+      // const allPlaces = [];
+      // for (const category of categories) {
+      //   const result = await fetchNearbyPlaces(category);
+      //   allPlaces.push(...result.slice(0, 7));
+      // }
       
-      setPlaces(allPlaces);
+      // setPlaces(allPlaces);
+      // console.log(JSON.stringify(allPlaces))
+
+      setPlaces(mixPlacesTest);
       locationListModalRef.current.present();
     } catch (error) {
       console.error(error);
@@ -213,7 +230,8 @@ export default function MapScreen({ navigation }) {
       const placeWithImageUrl = {
         ...placeDetails,
         imageUrl: imageTop,
-        isNonProfit: place.mapIconImage == 'https://i.postimg.cc/SsvFtJV5/Nonprofit-Icon.png'? true : false
+        isNonProfit: place.mapIconImage == 'https://i.postimg.cc/SsvFtJV5/Nonprofit-Icon.png'? true : false,
+        isLucky: place.isLucky
       };
 
       setSelectedPlace(placeWithImageUrl);
@@ -375,6 +393,7 @@ export default function MapScreen({ navigation }) {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => handleShowSafeHaven()}
+                // onPress={() => handleShowPlaces('nonprofit organization')}
               >
                 <View style={[styles.iconContainer, { backgroundColor: "#1E90FF" }]}>
                   {/* <Image style={{ height: 40, width:40 }} source={{uri: 'https://i.postimg.cc/SsvFtJV5/Nonprofit-Icon.png'}}/> */}
@@ -407,7 +426,7 @@ export default function MapScreen({ navigation }) {
           ref={locationListModalRef}
           index={0}
           snapPoints={snapPointsLocationList}
-          backgroundStyle={{ backgroundColor: "#F8F8F8" }}
+          backgroundStyle={{ backgroundColor: "#FFFFFF" }}
         >
           <LocationList
             places={places}

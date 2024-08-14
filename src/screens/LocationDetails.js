@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView,  TouchableOpacity, Dimensions, Image} from 'react-native';
 import { colors } from "../../assets/themes/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { inline } from 'react-native-web/dist/cjs/exports/StyleSheet/compiler';
 import { fontHeader } from '../../assets/themes/font';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 // These 3 defaut image is in case the place from google api have no images in there
 const defaultImages = [
@@ -16,6 +17,8 @@ const { height, width} = Dimensions.get('window');
 
 export default function LocationDetails({ place, onClose, getImageCanSee}) {
   const [images, setImages] =useState([]);
+  const confettiRef = useRef(null);
+  console.log('ISLUCKY OR NOT: ',place.isLucky)
   useEffect(() => {
     const fetchImages = async () => {
       let fetchedImages = [];
@@ -32,6 +35,9 @@ export default function LocationDetails({ place, onClose, getImageCanSee}) {
 
     };
     fetchImages();
+    if (place.isLucky && confettiRef.current) {
+      confettiRef.current.start();
+    }
   }, [place]);
 
   let price = "$";
@@ -81,6 +87,8 @@ export default function LocationDetails({ place, onClose, getImageCanSee}) {
     //<View style={styles.modalOverlay}>
       <ScrollView style={styles.container}>
 
+
+
         {/* HEADER OF LOCATION DETAILS*/} 
         <View style={styles.header}>
           <Circle></Circle> 
@@ -105,7 +113,11 @@ export default function LocationDetails({ place, onClose, getImageCanSee}) {
                 !place.opening_hours.open_now &&
                 <Text style={{color: "red"}}>Closed</Text>
               }
-              <Text style={{color: "grey"}}> - {place.address_components[2].long_name}, {place.address_components[3].long_name}</Text>
+              {place.address_components[2]?.long_name && place.address_components[3]?.long_name && (
+                <Text style={{ color: "grey" }}>
+                  - {place.address_components[2].long_name}, {place.address_components[3].long_name}
+                </Text>
+              )}              
               </Text>
             }
             {/* <View style={styles.iconContainer}>
@@ -268,6 +280,15 @@ typeof place.website !='undefined' &&
         </View>
 
         <View style={{height: height/8}} ></View> 
+        {place.isLucky && (
+          <ConfettiCannon
+            count={200}
+            origin={{ x: width / 2, y: 0 }}
+            autoStart={false}
+            ref={confettiRef}
+            style={{ zIndex: 1000 }}
+          />
+        )}
     </ScrollView>
   );
 }
