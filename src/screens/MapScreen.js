@@ -263,7 +263,7 @@ export default function MapScreen({ navigation }) {
 
   const insertFavoritePlace = async (placeObject) => {
     try {
-      const { data, error } = await supabase.from('favorite_places').insert([{ place_object: placeObject }]).single();
+      const { data, error } = await supabase.from('favorite_places').insert([{ place_object: placeObject, place_id: placeObject.place_id }]).single();
 
       if (error) {
         console.error('Error inserting favorite place:', error);
@@ -271,9 +271,21 @@ export default function MapScreen({ navigation }) {
       }
       return data;
     } catch (error) {
-      // Handle any unexpected errors
       console.error('Unexpected error inserting favorite place:', error);
       return null;
+    }
+  };
+
+  const deleteItemFromSupabase = async (item) => {
+    try {
+      const { data, error } = await supabase
+        .from('favorite_places').delete().eq('place_id', item.place_id);
+
+      if (error) throw error;
+
+      setPlaces((prevPlaces) => prevPlaces.filter((place) => place.place_id !== item.place_id));
+    } catch (error) {
+      console.error('Error deleting item:', error);
     }
   };
 
@@ -300,7 +312,7 @@ export default function MapScreen({ navigation }) {
                 }}
               >
                 <Image
-                  source={{ uri: 'https://i.postimg.cc/yxYLZHRT/Me-Bitmoji-Icon-1.png' }}
+                  source={require("../../assets/Me Bitmoji Icon.png")}
                   style={{ width: 100, height: 100 }}
                 />
               </Marker>
@@ -312,7 +324,7 @@ export default function MapScreen({ navigation }) {
                 }}
               >
                 <Image
-                  source={{ uri: 'https://i.postimg.cc/432bnSGD/Isabella-Bitmoji.png' }}
+                  source={require("../../assets/Isabella Bitmoji.png")}
                   style={{ width: 100, height: 100 }}
                 />
               </Marker>
@@ -385,7 +397,7 @@ export default function MapScreen({ navigation }) {
                 style={styles.button}
                 onPress={() => console.log("Pressed the useless button!")}
               >
-                <Image source={{uri: 'https://i.postimg.cc/HsnZ2XZ4/3-Bitmojis-Icon.png'}}
+                <Image source={require("../../assets/3 Bitmojis Icon.png")}
                 style={styles.imageInButton}
                 />
               </TouchableOpacity>
@@ -459,6 +471,7 @@ export default function MapScreen({ navigation }) {
             places={places}
             onClose={() => favoritelocationModalRef.current.close()}
             onPlacePress={handlePlacePress}
+            deleteItemFromSupabase = {deleteItemFromSupabase}
           />
         </BottomSheetModal>
       </View>
@@ -528,8 +541,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     flexDirection: "row",
     paddingVertical: 13,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
   },
   button: {
     backgroundColor: colors.belowPage,

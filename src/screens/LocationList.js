@@ -92,19 +92,27 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
     }
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = (item) => {
     const isOpen = item.opening_hours ? item.opening_hours.open_now : null;
-    const isOpenStatus = isOpen !== null ? (isOpen ? 'Open Now' : 'Closed') : 'Status Not Available';
-    const statusColor = isOpen !== null ? (isOpen ? 'green' : 'red') : 'gray';
+    const isOpenStatus =
+      isOpen !== null ? (isOpen ? "Open Now" : "Closed") : "Status Not Available";
+    const statusColor = isOpen !== null ? (isOpen ? "green" : "red") : "gray";
     const isFavorite = favorites.has(item.place_id);
-    
+
     return (
-      <View style={styles.itemContainer}>
-        <TouchableOpacity style={styles.item} onPress={() => onPlacePress(item)}>
+      <View key={item.place_id} style={styles.itemContainer}>
+        <TouchableOpacity
+          style={styles.item}
+          onPress={() => onPlacePress(item)}
+        >
           <Image style={styles.image} source={{ uri: item.imageUrl }} />
           <View style={styles.textContainer}>
-            <Text style={styles.title} numberOfLines={1}>{item.name}</Text>
-            <Text style={styles.vicinity} numberOfLines={2}>{item.vicinity}</Text>
+            <Text style={styles.title} numberOfLines={1}>
+              {item.name}
+            </Text>
+            <Text style={styles.cinityvi} numberOfLines={2}>
+              {item.vicinity}
+            </Text>
             <Text style={[styles.status, { color: statusColor }]}>
               {isOpenStatus}
             </Text>
@@ -208,20 +216,19 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
       </View>
       {/* End of Title 'Resources'*/}
 
-      {/* List of places Container */}
-      <View style={styles.listContainer}>
+      {/* List of items Container */}
+      <View style={styles.itemList}>
         {loading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
         ) : (
-          <FlatList
-            data={showAll ? places : places.slice(0, 4)}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.place_id}
-            style={styles.list}
-          />
+          <ScrollView>
+            {places.map((item) => renderItem(item))}
+          </ScrollView>
         )}
       </View>
-      {/* End of List of places Container */}
+      {/* End of List of items Container */}
 
       {/* Spotlights Section */}
       <View style={styles.spotlightsContainer}>
@@ -259,6 +266,7 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
         </ScrollView>
       </View>
       {/* End of Spotlights Section */}
+      <View style={styles.extraView}></View>
       </ScrollView>
     </View>
     </View>
@@ -333,19 +341,18 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexDirection: 'row',
-    // marginTop: 10,
+    marginBottom: 5,
   },
   scroll1Container: {
     // paddingHorizontal: 20,
   },
   scrollableContent: {
     flex: 1,
-    // Add margin or padding if needed
   },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   item: {
     flexDirection: 'row',
@@ -425,9 +432,6 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
   },
-  list: {
-    marginTop: 10,
-  },
   showAllButton: {
     backgroundColor: '#D3D3D3',
     borderRadius: 20,
@@ -448,6 +452,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 10,
   },
   resourcesTitle: {
     fontSize: 20,
@@ -475,10 +480,20 @@ const styles = StyleSheet.create({
   },
   spotlightImage: {
     width: 150,
-    height: 350,
+    height: 300,
     marginRight: 10,
     borderRadius: 8,
   },
+  itemList: {
+    height: 300,
+  },
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  extraView: {
+    height:110
+  }
 });
 
 export default LocationList;

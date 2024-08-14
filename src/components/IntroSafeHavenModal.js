@@ -15,7 +15,8 @@ const IntroSafeHavenModal = ({ isIntroModalVisible, handleContinue }) => {
             <Text style={styles.closeButtonText}>X</Text>
           </TouchableOpacity>
           <Image
-            source={{ uri: 'https://i.postimg.cc/Y9qMc66r/Weclome-to-Safe-Haven.png' }}
+            // source={{ uri: 'https://i.postimg.cc/Y9qMc66r/Weclome-to-Safe-Haven.png' }}
+            source={require("../../assets/WeclometoSafeHaven.png")}
             style={styles.image}
           />
           <TouchableOpacity onPress={handleContinue} style={styles.continueButton}>

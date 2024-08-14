@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Image} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
-export default function FavoriteScreen({ places, onClose, onPlacePress}) {
+export default function FavoriteScreen({ places, onClose, onPlacePress, deleteItemFromSupabase}) {
   const renderItem = ({ item }) => {
     const isOpen = item.opening_hours ? item.opening_hours.open_now : null;
     const isOpenStatus = isOpen !== null ? (isOpen ? 'Open Now' : 'Closed') : 'Status Not Available';
@@ -18,6 +19,16 @@ export default function FavoriteScreen({ places, onClose, onPlacePress}) {
               {isOpenStatus}
             </Text>
           </View>
+          <TouchableOpacity
+            style={styles.heartButton}
+            onPress={() => deleteItemFromSupabase(item)}
+          >
+            <Ionicons
+              name="trash"
+              size={18}
+              color="grey"
+            />
+          </TouchableOpacity>
         </TouchableOpacity>
       </View>
     );
@@ -102,21 +113,14 @@ const styles = StyleSheet.create({
   list: {
     // marginTop: 5,
   },
+  heartButton: {
+    backgroundColor: '#D3D3D3',
+    borderRadius: 20,
+    height: 35,
+    width:35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 2,
+    marginLeft: 10,
+  },
 });
-//   return (
-//     <View style={styles.container}>
-//         <Text>Hi Areli </Text>
-//         <Text>Here is what places variable look like after I get from supabase and pass to you</Text>
-//         <Text>{JSON.stringify(places,null,4)}</Text>
-//     </View>
-    
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     paddingLeft: 20,
-//     backgroundColor: '#fff',
-//   },
-// });
