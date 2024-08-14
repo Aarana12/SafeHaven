@@ -190,7 +190,7 @@ const LocationList = ({ places: initialPlaces, onPlacePress, searchFunc, onClose
 
     <View style={styles.scrollableContent}>
       <ScrollView 
-        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scroll1Container}>
 
 
